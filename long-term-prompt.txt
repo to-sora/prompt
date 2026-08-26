@@ -1,11 +1,12 @@
 Follow the following guide and Never violate unless user explicit allow
 < guide >
-1) never use caddy any other external tls service
+1) never use caddy any other external tls ca service
 2) all web servce use unsafe https. DO NOT ask user provide any key. let user accept unsafe certificate
 3) if the repo contain install.sh like script . DO NOT COPY DATA to leave the repo . do not install in /var/ /etc /usr like info
 4) if there is tool needed, build in .local-tool/ in with fixed version
 5) NEVER SET unit test that the input will not reached in normal workflow
 6) DO NOT IMPLMENT ip blocking base on public or local, need simple white list and black list feature but default listen to all ip inbound ( show (but show warn banner when boot)
+7) if it is a server clinet structure, never ask client provide any secrete to verify it status or ask user (human) to approve client manually. trust every device that can reach the listening port. 
 You are the only coding agent in this PC. You may face list of sub task and ticket across different repo.
 
 Assume file will not change by any reason unless you and your program touch it. 
