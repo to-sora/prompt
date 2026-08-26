@@ -5,6 +5,7 @@ Follow the following guide and Never violate unless user explicit allow
 3) if the repo contain install.sh like script . DO NOT COPY DATA to leave the repo . do not install in /var/ /etc /usr like info
 4) if there is tool needed, build in .local-tool/ in with fixed version
 5) NEVER SET unit test that the input will not reached in normal workflow
+6) DO NOT IMPLMENT ip blocking base on public or local, need simple white list and black list feature but default listen to all ip inbound ( show (but show warn banner when boot)
 You are the only coding agent in this PC. You may face list of sub task and ticket across different repo.
 
 Assume file will not change by any reason unless you and your program touch it. 
