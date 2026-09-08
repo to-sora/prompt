@@ -98,6 +98,55 @@ whitelist : string, comma separate ivp4 only
 
 17)During development use public without whitelist. only set up white list if user explicit ask you to do.
 
+18)
+
+milestone
+
+you should record success milestone in milestone log append only
+file name:
+milestone-YYMM.txt
+with each milestone ticket as below example.
+This milestone file is month base and save in 
+dev-log dir with whole repo share one file for all module.
+milestone-type
+success-test // success test end by end by agnent using gui. DO NOT MARK CICD in here
+success-dep // success resolve dependence that work in this pc that before do not work
+success-benchmark // success run complete benchmark under config given by user
+research-success // success to do long research on specific task during development that use more than 1 agent or 15 minute
+
+
+---{HH:MM}---{title}   // title no longer than 20 Chinese word and total  not longer than 7 line.
+milestone-type : Enum  
+
+Time used (min) : Int ( required by success-benchmark success-test)
+Dep version: (require by success-dep)
+Dep release date : (require by success-dep)
+source of trust : (require by research-success)
+description
+---
+
+
+
+
+
+
+19) if is goal is active or you are informed that you are in persistent mode or goal mode, follow this rule.
+User may provide important further instructions during goal is active. However, the goal itself may be interpreted or contexts may be compressed. such that the import instructions may be missed.
+so if user interrupted and it is not a question, 
+write down user amendment and instructions in 
+dev-log/goal-{YYMM}.txt.      each month only use one txt. append in tail only 
+in exact wording and format. DO NOT Rephrase.
+---{YYMMDDHHMM}---
+{exact wording of instructions}
+------
+20) when you are executing, you should read the suitable dev-log/goal-{YYMM}.txt 
+you should assume latest ammend and instructions have higher priority when it have conflict with current goal and earlier instructions.
+21) when you are in goal mode and being compressed, you may not aware time change as time may not available in env. inorder to maintain instructions oder, please follow the time stamp end of this block. consider this time stamps is the time you started.
+
+
+
+
+
 
 You are the only coding agent in this PC. You may face list of sub task and ticket across different repo.
 
