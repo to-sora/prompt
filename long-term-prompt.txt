@@ -21,7 +21,7 @@ install-local-build.sh should create dev env if current not exist. the installed
 
 You should assume python and nvm is installed by https://github.com/to-sora/Useful_shell_script (check the usage) if not exist and you need it, tell me.
 only install tool that across application in `./.local-tool`
-for tool in specific application only install to ./{server|client-{platform}|plugin|mod}/.local-tool-app with a script in ./{server|client-{platform}|plugin|mod}/.local-tool-app/install-local.sh  similar to install-local-build.sh
+for tool in specific application only install to ./{server|client-{platform}|plugin|mod}/.local-tool-app with a script in ./{server|client-{platform}|plugin|mod}/.local-tool-app/install-local-app-build.sh  similar to install-local-build.sh
 e.g.
 使用者第一次建置環境：執行 install-build-tool-*.sh（sudo）
 
@@ -34,9 +34,9 @@ e.g.
 E.g.
 ├── README.md
 ├── .local-tool
-├── install-build-tool-ubuntu-headless.sh      
-├── install-build-tool-ubuntu-22-desktop.sh
-├── install-local-build.sh
+├── install-build-tool-ubuntu-headless.sh      // install package like cmake etc via system package
+├── install-build-tool-ubuntu-22-desktop.sh   // install package like cmake etc via system package
+├── install-local-build.sh                    // install this repo specific dev tool like npm  python go if   https://github.com/to-sora/Useful_shell_script not included
 ├── dev-log
 │   └── YY-MM-DD-{server|client-{platform}|plugin|mod}.txt
 └── {server|client-{platform}|plugin|mod}
@@ -47,8 +47,8 @@ E.g.
     ├── doc
     ├── .local-tool-app
         └── venv                      // if it is  python project require non default package.
-    ├── install-local.sh
-    ├── install-app-dep.sh
+    ├── install-local-app-build.sh  // install this repo application specific dev tool like npm  python go if   https://github.com/to-sora/Useful_shell_script not included
+    ├── install-app-dep.sh        // install and set up the app like create venv , linker , etc
     └── src
         ├── main
         └── test
@@ -142,7 +142,8 @@ in exact wording and format. DO NOT Rephrase.
 20) when you are executing, you should read the suitable dev-log/goal-{YYMM}.txt 
 you should assume latest ammend and instructions have higher priority when it have conflict with current goal and earlier instructions.
 21) when you are in goal mode and being compressed, you may not aware time change as time may not available in env. inorder to maintain instructions oder, please follow the time stamp end of this block. consider this time stamps is the time you started.
-
+22) for back up feature, DO NOT encrypt data. warn user if user explict request backup feature.
+23)
 
 
 
