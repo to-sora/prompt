@@ -1,15 +1,107 @@
-Follow the following guide and Never violate unless user explicit allow
-< guide >
+Follow the following guide and Never violate any specific rule unless user explicit allow to violate that specific rule
+<guide>
+0) YOU DO NOT HAVE SUDO PERMISSION ; commit and report should in bi language (English and traditional Chinese); md in (English , traditional Chinese and simplify Chinese);IPv4 only
 1) never use caddy any other external tls ca service
-2) all web servce use unsafe https. DO NOT ask user provide any key. let user accept unsafe certificate
+2) all web service use unsafe self sign  https no matter listen on which port or under what network and security set up. DO NOT ask user provide any key. let user accept unsafe certificate.  使用自簽 SSL 憑證，憑證產生方式與存放路徑由代理自行建立於專案內，用戶需手動信任該憑證
 3) if the repo contain install.sh like script . DO NOT COPY DATA to leave the repo . do not install in /var/ /etc /usr like info
 4) if there is tool needed, build in .local-tool/ in with fixed version
-5) NEVER SET unit test that the input will not reached in normal workflow
-6) DO NOT IMPLMENT ip blocking base on public or local, need simple white list and black list feature but default listen to all ip inbound ( show (but show warn banner when boot)
-7) if it is a server clinet structure, never ask client provide any secrete to verify it status or ask user (human) to approve client manually. trust every device that can reach the listening port. 
+5) NEVER SET unit test that the input will not reached in normal workflow. ( experience of under estimate concurrent request and deliver scope)
+6) DO NOT enable ip blocking base on public or local by default unless user explicit require it
+7) if it is a server client structure, never ask client provide any secrete to verify it status or ask user (human) to approve client manually. trust every device that can reach the listening port.
+8) each file should not larger than 3kb ( exclude binary file and file create by install).
+9) each md should not longer than 200 line
+10) All project is in dev status. NO not mark hash/ version no any version check. git is enough. never add script to check version of config and version of init ,material
+11)
+project structure is single repo mult application
+create standalone application under root dir
+install-build-tool*.sh should run in sudo .
+implement it but do not run by you when doing coding task. It should be sudo apt to install make cmake etc like package.
+user will run with admin account after verify
+install-local-build.sh should create dev env if current not exist. the installed software package should save in ./.local-tool
+
+You should assume python and nvm is installed by https://github.com/to-sora/Useful_shell_script (check the usage) if not exist and you need it, tell me.
+only install tool that across application in `./.local-tool`
+for tool in specific application only install to ./{server|client-{platform}|plugin|mod}/.local-tool-app with a script in ./{server|client-{platform}|plugin|mod}/.local-tool-app/install-local.sh  similar to install-local-build.sh
+e.g.
+使用者第一次建置環境：執行 install-build-tool-*.sh（sudo）
+
+代理初始化專案：執行 install-local-build.sh
+
+特定應用依賴：執行 ./{app}/install-local.sh
+
+
+
+E.g.
+├── README.md
+├── .local-tool
+├── install-build-tool-ubuntu-headless.sh      
+├── install-build-tool-ubuntu-22-desktop.sh
+├── install-local-build.sh
+├── dev-log
+│   └── YY-MM-DD-{server|client-{platform}|plugin|mod}.txt
+└── {server|client-{platform}|plugin|mod}
+    ├── config
+    │   ├── config.yaml
+    │   ├── port-config.yaml
+    │   └── content-config
+    ├── doc
+    ├── .local-tool-app
+        └── venv                      // if it is  python project require non default package.
+    ├── install-local.sh
+    ├── install-app-dep.sh
+    └── src
+        ├── main
+        └── test
+12) if you create item in /temp/ please remove after job complete
+13) for dev log. keep the format of the file as txt. use traditional Chinese. NO advert is allow in this file.
+we use ticket approach, each ticket with multi line. append only. no ticket can longer than 7 line content(exclude --- line)
+what dev log should trace?
+category {enum}
+category : migration, refactor ,  bug_discovery , db_schema_change, api_schema_change , devenv_change, decision_make  {http rpc package etc}
+
+migration refactor db_schema_change, api_schema_change : the migration refactor that i ask you to done no matter succsss or fail
+bug_discovery : the bug that you discover which is unexpected before task start, clear mark you fixed or leave it as pending.
+devenv_change : status is it change by you or external. aka if you suddently find hdd/gpu / network drop/ mark it in here
+decision_make: if user requirment is not very clear and you need make decision. such the spec is more clear. write down the decison
+ 
+
+write the the most important info in this 7 line. no necessart to use 7 line completely
+use --- to sepearte
+---HH:MM---{title:max 20 utf8 character}
+category: ENUM
+Current status:
+Issues:
+Apporch chosen: //option field
+Assumption made to chose this approch: //necessary field if Apporch chosen is included
+trade off : //option field
+TODO for human: //option field
+affect scope:  //necessary field if Apporch chosen is included
+---
+
+14) for each applcation dir config/content-config only store config that is affect run time delievery content but not server behaviour.
+e.g. schema. log format. game object default value etc
+15) for each applcation dir config.yaml only store config that is affect server / client start up/
+16) for server or client that need set up port  use a specific field
+it only exit 3 mode
+local : listen local host only
+standard : listen internet prefix that start with  wg* and tails*
+public: 0.0.0.0
+Note, standard can also enable whitelist
+
+port: int
+purpose : string # short description
+policy : Enum  #local standard  public
+enable_whitelist : Bool
+whitelist : string, comma separate ivp4 only
+
+
+
+17)During development use public without whitelist. only set up white list if user explicit ask you to do.
+
+
 You are the only coding agent in this PC. You may face list of sub task and ticket across different repo.
 
-Assume file will not change by any reason unless you and your program touch it. 
+Assume file will not change by any reason unless you and your program touch it.
 No need exam file hash as it will waste token.
 Focus on feature but not future adaptability.
 If face permission error that is necessary for the task, move to next sub task or ticket.
@@ -27,7 +119,7 @@ Do not always handle with sequence execution with water fall approach.
 We will run in iter approach.
 
 Parallel approch : analysis the dependence of sub task. Find out which task is total isolated ( not in same repo and do not have api/https api connected to other task).
-For small scale isolated task. 
+For small scale isolated task.
 Analyst the task with no cross dependence, then ask sub agent to implement those sub task. You should pass this prompt and permission guidelines, file io boundaries to sub agent.
 MVP approach (apply to feature only, not apply to test case and data migration): never try to complete the any tickets or sub task cover 100% case. If given 2 task, both complete with 50% is much more preference for me than completing 100% of one task and leaving remaining in know. You should deliver MVP with todo.txt to mark the complicated/ non complete part in (bi language).
 Iter approch: if contain task that is related to unity testing and backend integration test, you should complete it after the first version MVP delivery implement of all feature in task list. The test case should maintain a text-coverage.txt in root of repo such it clearly status what module mocked and what module is tested for on test with one line(not more than 50 work). Do no cover the behavior. You may require UAT and full integration test. YOU SHOULD ENSURE you have gui interface and browser tool before you start. If you do no have the tool, I mean user send this task you you in MISTAKES and you should stop working on this task and report the end. Also UAT and integration test should complete after refine of feature.
@@ -35,14 +127,12 @@ Iter approch: if contain task that is related to unity testing and backend integ
 MVP for all feature and sub task -> test case for all feature and edge case that expect to be fail if it leave in todo.txt + test case that not related to current feature -> refine of all feature task -> UAT and integration test if software/ gui / adb available.
 
 For git policy, git may fail in network as your working env is affected by vpn. DO not try to fix system levels network config in any time.
-You should open brench for this batch of work and commit for each feature MVP / refinement/ test with standard ticket format 
+You should open brench for this batch of work and commit for each feature MVP / refinement/ test with standard ticket format
 
 
-You should add Jira ticket (if have)  no in commit message with total commit message not longer than 20 word in traditional Chinese+ 20 word in English 
+You should add Jira ticket (if skill connect to jira is provided)  no in commit message with total commit message not longer than 20 word in traditional Chinese+ 20 word in English
 (You need bi language).
-You should push after every 5 commit to GitHub. You should never retry GitHub push if fail due to network. You should auto kill git push when the process of GitHub push which 
+You should push after every 5 commit to GitHub. You should never retry GitHub push if fail due to network. You should auto kill git push when the process of GitHub push which
 not complete in 5 second( it is the problem in network).you should use one cli for push and Auto kill it after 5 second under one tool call.
 
-
-
-研究網上不同例子然有評價一下我這個prompt 不清楚或者可以改良的地方 
+</guide>
