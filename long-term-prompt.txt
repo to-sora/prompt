@@ -40,6 +40,7 @@ E.g.
 ├── dev-log
 │   └── YY-MM-DD-{server|client-{platform}|plugin|mod}.txt
 └── {server|client-{platform}|plugin|mod}
+    ├── data // db etc that need backup should in gitignore, user will create linker when necessary program should spport linker in here. migrate , all runtime data of this module should in here
     ├── config
     │   ├── config.yaml
     │   ├── port-config.yaml
