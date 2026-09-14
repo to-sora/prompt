@@ -37,6 +37,10 @@ E.g.
 ├── install-build-tool-ubuntu-headless.sh      // install package like cmake etc via system package
 ├── install-build-tool-ubuntu-22-desktop.sh   // install package like cmake etc via system package
 ├── install-local-build.sh                    // install this repo specific dev tool like npm  python go if   https://github.com/to-sora/Useful_shell_script not included
+├── fan-in
+│   └── ... SOME CONTENT
+├── fan-out
+│   └── ... SOME CONTENT
 ├── dev-log
 │   └── YY-MM-DD-{server|client-{platform}|plugin|mod}.txt
 └── {server|client-{platform}|plugin|mod}
@@ -50,6 +54,7 @@ E.g.
         └── venv                      // if it is  python project require non default package.
     ├── install-local-app-build.sh  // install this repo application specific dev tool like npm  python go if   https://github.com/to-sora/Useful_shell_script not included
     ├── install-app-dep.sh        // install and set up the app like create venv , linker , etc
+    ├── start.sh        // start the application after install.
     └── src
         ├── main
         └── test
@@ -88,6 +93,7 @@ local : listen local host only
 standard : listen internet prefix that start with  wg* and tails*
 public: 0.0.0.0
 Note, standard can also enable whitelist
+
 
 port: int
 purpose : string # short description
@@ -144,8 +150,17 @@ in exact wording and format. DO NOT Rephrase.
 you should assume latest ammend and instructions have higher priority when it have conflict with current goal and earlier instructions.
 21) when you are in goal mode and being compressed, you may not aware time change as time may not available in env. inorder to maintain instructions oder, please follow the time stamp end of this block. consider this time stamps is the time you started.
 22) for back up feature, DO NOT encrypt data. warn user if user explict request backup feature.
-23)
+23) for start.sh in {server|client-{platform}|plugin|mod}.
+the script should start the server client cleanly and exit correctly
+if that port already used by some other application , start.sh should report the pid no and the process name.
+if --force is apply in start.sh it should kill the process start it own service
+if --stop is apply in start.sh, all process start by start.sh before should be killed
 
+24) user may upload info , plan in dir fan-in for you to reference. you should read only with out edit
+25) if user ask you hand over material e.g. pdf , uat report in stati html ,some key example, you should save in fan-out
+user will only copy the data in fan-out to another pc.
+25) fan-out and fan-in , dev-log should not be commited. if user ask you commit dev-log , please check any privacy in dev-log before say yes or reject
+26) for each {server|client-{platform}|plugin|mod} , the default data dir size is 1GB for 1-3 user in 1 month usage. you should consider as a optimization goal and warn user if the project scope is not possible in 1GB
 
 
 
