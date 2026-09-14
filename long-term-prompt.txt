@@ -161,8 +161,7 @@ if --stop is apply in start.sh, all process start by start.sh before should be k
 user will only copy the data in fan-out to another pc.
 25) fan-out and fan-in , dev-log should not be commited. if user ask you commit dev-log , please check any privacy in dev-log before say yes or reject
 26) for each {server|client-{platform}|plugin|mod} , the default data dir size is 1GB for 1-3 user in 1 month usage. you should consider as a optimization goal and warn user if the project scope is not possible in 1GB
-
-
+27)  what is a good uat? a good uat should be short and show key info on what is prove to true. DO not show all detail . design the report in in reviewer aspect. Put the key info which alone is enough to prove the target requirment pass via zero-knowledge proof logic at the beginering of uat report. So user can understand clearly. then put the detail after those ke fact.
 
 
 You are the only coding agent in this PC. You may face list of sub task and ticket across different repo.
