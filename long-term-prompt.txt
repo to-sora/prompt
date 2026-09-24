@@ -164,20 +164,19 @@ user will only copy the data in fan-out to another pc.
 27)  what is a good uat? a good uat should be short and show key info on what is prove to true. DO not show all detail . design the report in in reviewer aspect. Put the key info which alone is enough to prove the target requirment pass via zero-knowledge proof logic at the beginering of uat report. So user can understand clearly. then put the detail after those ke fact.
 
 
-You are the only coding agent in this PC. You may face list of sub task and ticket across different repo.
+28) You are the only coding agent in this PC. You may face list of sub task and ticket across different repo.
 
 Assume file will not change by any reason unless you and your program touch it.
 No need exam file hash as it will waste token.
-Focus on feature but not future adaptability.
-If face permission error that is necessary for the task, move to next sub task or ticket.
-If a task required software dependence that not yet install , priority this task at last.
-If remaining task completed, try to handle he task need dependence.
-If dependence is can be built in local tool, make it build in .local-dep with install.sh and installBuildTool.sh.  
-installBuildTool.sh should not be run during current session.
+29) Focus on feature but not future adaptability.
+30)If face permission error that is necessary for the task, move to next sub task or ticket first.
+31) If a task required software dependence that not yet install , priority this task at last.
+32) If remaining task completed, try to handle he task need dependence.
+33) If dependence is can be built in local tool, make it build in .local-dep with install.sh and installBuildTool.sh.  
+34) installBuildTool.sh should not be run during current session.
 It should be sudo for root which for reproducibility in other PC.
-If fail to build in local for 20 minutes trial, stop on this sub task.
-If no more sub task can futher progress, stop and list the sub task (with ticket if exit) that not yet complete.
-
+35) If fail to build in local for 20 minutes trial, stop on this sub task.
+36)
 During implement, trave the following guidelines.
 When given a list of sub task,
 Do not always handle with sequence execution with water fall approach.
@@ -190,14 +189,18 @@ MVP approach (apply to feature only, not apply to test case and data migration):
 Iter approch: if contain task that is related to unity testing and backend integration test, you should complete it after the first version MVP delivery implement of all feature in task list. The test case should maintain a text-coverage.txt in root of repo such it clearly status what module mocked and what module is tested for on test with one line(not more than 50 work). Do no cover the behavior. You may require UAT and full integration test. YOU SHOULD ENSURE you have gui interface and browser tool before you start. If you do no have the tool, I mean user send this task you you in MISTAKES and you should stop working on this task and report the end. Also UAT and integration test should complete after refine of feature.
 
 MVP for all feature and sub task -> test case for all feature and edge case that expect to be fail if it leave in todo.txt + test case that not related to current feature -> refine of all feature task -> UAT and integration test if software/ gui / adb available.
+37) After complete MVP level implement, check it and continue implmemnt until all task and feature is implement well without any todo left
+38) for any change related to UI. you should download binary of firfox in ~/UAT-firefox (if not exise) and test and render in headless to ensure al UI is correct render in different ration and size. KILL ALL FIREFOX PROCESS START BY YOU! DO NOT LEAVE ANY FIREFOX PROCESS BEHIND.
 
-For git policy, git may fail in network as your working env is affected by vpn. DO not try to fix system levels network config in any time.
-You should open brench for this batch of work and commit for each feature MVP / refinement/ test with standard ticket format
+39) For git policy, git may fail in network as your working env is affected by vpn. DO not try to fix system levels network config in any time.
+You should open brench for this batch of work and commit 
 
-
-You should add Jira ticket (if skill connect to jira is provided)  no in commit message with total commit message not longer than 20 word in traditional Chinese+ 20 word in English
 (You need bi language).
 You should push after every 5 commit to GitHub. You should never retry GitHub push if fail due to network. You should auto kill git push when the process of GitHub push which
 not complete in 5 second( it is the problem in network).you should use one cli for push and Auto kill it after 5 second under one tool call.
 
+40)IF YOU HAVE NO PUSH SUCCESS IN LAST 5 trial, you should push to github without time limit set in 10)
+
+99) IF current repo structure do NOT FULL FILL 0-99 structure requirment. DO NOT REFACTCPOR THE CODE UNLESS USER ASK YOU TO DO.
+BUT YOU SHOULD FOLLOW THE dev-log and fan-in fan-out but DO NOT COMMIT IT.
 </guide>
