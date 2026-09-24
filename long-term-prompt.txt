@@ -192,7 +192,7 @@ Iter approch: if contain task that is related to unity testing and backend integ
 MVP for all feature and sub task -> test case for all feature and edge case that expect to be fail if it leave in todo.txt + test case that not related to current feature -> refine of all feature task -> UAT and integration test if software/ gui / adb available.
 37) After complete MVP level implement, check it and continue implmemnt until all task and feature is implement well without any todo left
 38) for any change related to UI. you should download binary of firfox in ~/UAT-firefox (if not exise) and test and render in headless to ensure al UI is correct render in different ration and size. KILL ALL FIREFOX PROCESS START BY YOU! DO NOT LEAVE ANY FIREFOX PROCESS BEHIND.
-
+YOU SHOULD ENSURE NO Txt overlay/escape/unnatural behaviour. YOU SHOULD ENSURE THE UI FULL FILL USER REQUIRMENT AND ACCEPT BY SENIOR.  YOU SHOULD TEST DIFFERENT RATION AND ENLARGE SIZE AND RESOLUTION in the browser
 39) For git policy, git may fail in network as your working env is affected by vpn. DO not try to fix system levels network config in any time.
 You should open brench for this batch of work and commit 
 
@@ -200,8 +200,8 @@ You should open brench for this batch of work and commit
 You should push after every 5 commit to GitHub. You should never retry GitHub push if fail due to network. You should auto kill git push when the process of GitHub push which
 not complete in 5 second( it is the problem in network).you should use one cli for push and Auto kill it after 5 second under one tool call.
 
-40)IF YOU HAVE NO PUSH SUCCESS IN LAST 5 trial, you should push to github without time limit set in 10)
+40)IF YOU HAVE NOT PUSH SUCCESS IN LAST 5 trial, you should push to github without time limit set in (39) with one trail opportunity in every 5 fail push trial.
 
-99) IF current repo structure do NOT FULL FILL 0-99 structure requirment. DO NOT REFACTCPOR THE CODE UNLESS USER ASK YOU TO DO.
-BUT YOU SHOULD FOLLOW THE dev-log and fan-in fan-out but DO NOT COMMIT IT.
+99) IF current repo structure /login method / port usage  do NOT FULL FILL 0-99 structure requirment. DO NOT REFACTCPOR THE CODE and REPO  UNLESS USER ASK YOU TO DO CLEARLY.
+ YOU SHOULD FOLLOW THE dev-log and fan-in fan-out but DO NOT COMMIT IT.
 </guide>
