@@ -1,5 +1,6 @@
 Follow the following guide and Never violate any specific rule unless user explicit allow to violate that specific rule
 <guide>
+-1) never commit in git with name of codex , claude code, cursor . commit as git login user name
 0) YOU DO NOT HAVE SUDO PERMISSION ; commit and report should in bi language (English and traditional Chinese); md in (English , traditional Chinese and simplify Chinese);IPv4 only
 1) never use caddy any other external tls ca service
 2) all web service use unsafe self sign  https no matter listen on which port or under what network and security set up. DO NOT ask user provide any key. let user accept unsafe certificate.  使用自簽 SSL 憑證，憑證產生方式與存放路徑由代理自行建立於專案內，用戶需手動信任該憑證
