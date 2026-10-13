@@ -114,7 +114,7 @@ you should record success milestone in milestone log append only
 file name:
 milestone-YYMM.txt
 with each milestone ticket as below example.
-This milestone file is month base and save in 
+This milestone file is month base and save in
 dev-log dir with whole repo share one file for all module.
 milestone-type
 success-test // success test end by end by agnent using gui. DO NOT MARK CICD in here
@@ -140,14 +140,14 @@ description
 
 19) if is goal is active or you are informed that you are in persistent mode or goal mode, follow this rule.
 User may provide important further instructions during goal is active. However, the goal itself may be interpreted or contexts may be compressed. such that the import instructions may be missed.
-so if user interrupted and it is not a question, 
-write down user amendment and instructions in 
-dev-log/goal-{YYMM}.txt.      each month only use one txt. append in tail only 
+so if user interrupted and it is not a question,
+write down user amendment and instructions in
+dev-log/goal-{YYMM}.txt.      each month only use one txt. append in tail only
 in exact wording and format. DO NOT Rephrase.
 ---{YYMMDDHHMM}---
 {exact wording of instructions}
 ------
-20) when you are executing, you should read the suitable dev-log/goal-{YYMM}.txt 
+20) when you are executing, you should read the suitable dev-log/goal-{YYMM}.txt
 you should assume latest ammend and instructions have higher priority when it have conflict with current goal and earlier instructions.
 21) when you are in goal mode and being compressed, you may not aware time change as time may not available in env. inorder to maintain instructions oder, please follow the time stamp end of this block. consider this time stamps is the time you started.
 22) for back up feature, DO NOT encrypt data. warn user if user explict request backup feature.
@@ -194,11 +194,12 @@ MVP for all feature and sub task -> test case for all feature and edge case that
 38) for any change related to UI. you should download binary of firfox in ~/UAT-firefox (if not exise) and test and render in headless to ensure al UI is correct render in different ration and size. KILL ALL FIREFOX PROCESS START BY YOU! DO NOT LEAVE ANY FIREFOX PROCESS BEHIND.
 YOU SHOULD ENSURE NO Txt overlay/escape/unnatural behaviour. YOU SHOULD ENSURE THE UI FULL FILL USER REQUIRMENT AND ACCEPT BY SENIOR.  YOU SHOULD TEST DIFFERENT RATION AND ENLARGE SIZE AND RESOLUTION in the browser
 39) For git policy, git may fail in network as your working env is affected by vpn. DO not try to fix system levels network config in any time.
-You should open brench for this batch of work and commit 
+You should open brench for this batch of work and commit
 
 (You need bi language).
 You should push after every 5 commit to GitHub. You should never retry GitHub push if fail due to network. You should auto kill git push when the process of GitHub push which
 not complete in 5 second( it is the problem in network).you should use one cli for push and Auto kill it after 5 second under one tool call.
+If git push fail, you should continue working. push fail IS NEVER A BLOCKER of goal
 
 40)IF YOU HAVE NOT PUSH SUCCESS IN LAST 5 trial, you should push to github without time limit set in (39) with one trail opportunity in every 5 fail push trial.
 
@@ -206,6 +207,108 @@ not complete in 5 second( it is the problem in network).you should use one cli f
 41.1) you should test with the cheapest model with same api as aim for the work and target. so ensure pipline is correct.
 41.2) mock and cache api reply and use for unit test. do not sent real api during any cicd pipline.
 41.3) user may provide doc and develop spec that have explicit suggest you use strong model. But you should not use it unless after confirm with user run time ( using prompt box that communication to user if apply to you), but in mean time you should test and implementing with the cheapest nodel that is suitable for the task in term of reply format.
+
+42.1) If it is a non gpu task, you should use at most 10% ram and 25% cpu thread
+42.2) If it is a GPU and ML task, you should use at most 60% ram and 50% cpu thread
+42.3) you should not exist 80% ram usage in any case.
+
+
+43) UI debug overlay (--ui-debug)
+THIS FEATURE SHOULD implement in all WEB UI ONLY
+Enable this section only when the request contains --ui-debug (in the options line or anywhere in the user's message). Without the flag, still add data-ui-id attributes as described in 43.1, but do not include any overlay code, CSS, or ui-ids.txt.
+
+Purpose: let the user point at any part of the page by a short, stable ID (e.g. "F2.S4: explain the lock in more depth", "N7 is the wrong node kind"), so changes land on the exact facts.json entry without screenshots or markup.
+
+43.1) ID scheme
+Every rendered element that comes from facts.json, plus every region and control, carries a data-ui-id attribute.
+IDs come from facts.json, never from render order. Assign an ID when the object is first created in facts.json. Never renumber or reuse IDs; when an object is removed, retire its ID.
+Prefixes:
+- R region (R1 system map, R2 lane view, R3 annotation rail, R4 step log, R5 status bar, R6 inspector)
+- N node, G group box, E edge on the system map
+- F flow; F#.L# lane, F#.S# step, F#.W# what-if branch
+- M state machine; M#.T# transition
+- D data table or cache key format
+- K decision card (design-tradeoff page)
+- Q question; Q#.# question within a topic
+- C control (C1 play, C2 pause, C3 step back, C4 step forward, C5 restart, C6 speed, C7 theme, C8 debug toggle)
+IDs must be unique in the page. Each facts.json object stores its ID in an "id" field.
+
+43.2) Activation
+The overlay is off when the page loads, unless the URL hash is #ui-debug.
+Shift+D cycles three modes: off, coarse (R, N, G, F, K, M, D), full (every data-ui-id). Ignore the shortcut while focus is in a text field.
+Add a text button "[dbg]" (C8) at the end of the status bar that cycles the same modes. Show the current mode in it: [dbg off], [dbg coarse], [dbg full].
+The overlay is the only exception to the no-floating-widgets rule in T5.1.
+
+43.3) Behavior
+Draw one tag per visible element at its top-left corner, slightly outside the element's border.
+Hide tags for elements outside the viewport or clipped by a scrolling container. Recompute positions on scroll, resize, and each animation step, throttled with requestAnimationFrame.
+When a tag would overlap an earlier tag, shift it right by the earlier tag's width plus 2px, up to three times; if it still overlaps, hide it. Hovering the element always shows its tag.
+Hovering a tag or its element outlines the element and shows a tooltip in this format:
+  F2.S4 step
+  Reserve credit
+  facts F2 > F2.S4
+  src billing/service.py:88-104
+Clicking a tag copies one line to the clipboard and marks the tag with ✓ for 1 second:
+  [F2.S4] Reserve credit — facts: F2 > F2.S4 — src: billing/service.py:88-104
+Use navigator.clipboard.writeText; if it fails, fall back to a hidden textarea with document.execCommand("copy"); if that also fails, show the line in the status bar as selectable text.
+Tags never change layout, never intercept clicks on the element itself, and never animate. Hide the overlay when printing.
+
+43.4) CSS
+Use only the existing palette tokens. Tags use inverted colors (background --text, text --bg), which keeps contrast above 4.5:1 in both themes without new colors.
+
+  .ui-dbg-layer { position: fixed; inset: 0; pointer-events: none; z-index: 1000; }
+  .ui-dbg-tag {
+    position: absolute; pointer-events: auto; cursor: copy;
+    font: 600 13px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    padding: 2px 4px; white-space: nowrap;
+    background: var(--text); color: var(--bg); border: 1px solid var(--bg);
+  }
+  .ui-dbg-tag[data-kind="region"] { padding: 3px 6px; }
+  .ui-dbg-tag[data-kind="region"]::before { content: "["; }
+  .ui-dbg-tag[data-kind="region"]::after { content: "]"; }
+  .ui-dbg-tag.is-copied::after { content: " ✓"; }
+  [data-ui-dbg-hover] { outline: 1px dashed var(--text); outline-offset: 2px; }
+  .ui-dbg-tip {
+    position: absolute; pointer-events: none; max-width: min(420px, 90vw);
+    padding: 6px 8px; white-space: pre;
+    font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    background: var(--surface); color: var(--text); border: 1px solid var(--text);
+  }
+  @media print { .ui-dbg-layer { display: none; } }
+
+43.5) ID index file
+Generate ui-ids.txt in the output directory from facts.json with the build script, one line per ID, sorted by ID:
+  F2.S4 | step | Reserve credit | F2 > F2.S4 | billing/service.py:88-104
+Use "-" for an empty field. Regenerate it on every build.
+
+43.6) Using IDs in follow-up requests
+When the user refers to an ID, look it up in ui-ids.txt and facts.json, edit the facts.json entry, and rebuild index.html and ui-ids.txt. Do not locate elements by screen position or by visible text. If the ID does not exist, say so and list the nearest IDs of the same prefix.
+
+43.7) Check
+With --ui-debug, add to the final check: every data-ui-id in the DOM is unique; every facts.json ID appears in the DOM or is listed in notes.txt as not rendered; Shift+D and [dbg] cycle all three modes; clicking a tag copies the expected line; take screenshots in full mode at 1440x900 and 390x844 and confirm no tag is cut off at the viewport edge.
+
+44)
+
+when using external service(all service that not start by you no matter the service is locate in other LAN PC , VPS or other provider),
+you should stop calling that endpoint after 15 minute of no repsond or unhealthy.
+what you should do next? you should not stop working. you should continue on remain module that do not depend on this external service.
+you should implement a minium dummpy module to have hardcode reply such that can devlopment can continue and remind user at last.
+if UAT use dummy module, It is ok but necessary reminder user that this record and report is run by dummy.
+what is no repsond or unhealthy?
+44.1) no health signal under correct config of ssl / secure setting in your side
+44.2) expliact reply from server that service is not available after suitable trial and you have ensure all correct after search interrnet and read doc
+## External Service Health Check API Examples
+ 1. ComfyUI
+curl -fsS --max-time 10 http://localhost:8188/system_stats
+### 2. LLaMA-Factory
+curl -fsS --max-time 10 http://localhost:8000/v1/models
+### 3. llama.cpp
+curl -fsS --max-time 10 http://localhost:8080/health
+### 4. S3 / S3-Compatible Storage
+aws s3api head-bucket --bucket "$S3_BUCKET" --endpoint-url "$S3_ENDPOINT"
+### 5. Google Drive API
+curl -fsS --max-time 10 -H "Authorization: Bearer $GOOGLE_ACCESS_TOKEN" \
+  "https://www.googleapis.com/drive/v3/about?fields=kind"
 
 99) IF current repo structure /login method / port usage  do NOT FULL FILL 0-99 structure requirment. DO NOT REFACTCPOR THE CODE and REPO  UNLESS USER ASK YOU TO DO CLEARLY.
  YOU SHOULD FOLLOW THE dev-log and fan-in fan-out but DO NOT COMMIT IT.
